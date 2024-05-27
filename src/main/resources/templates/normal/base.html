@@ -41,16 +41,16 @@
 <!--End Navbar -->
 
 <!-- Sidebar Starts -->
-<div class="sidebar">
+<div class="sidebar mt-2">
 
     <span onclick="toggleSidebar()" class="crossBtn"> &times;</span>
 
-    <a href="" class="item"> <i class="fa-solid fa-house"></i> Home</a>
+    <a href="" th:href="@{/user/index}" class="item"> <i class="fa-solid fa-house"></i> Home</a>
     <a href="" class="item"> <i class="fa-solid fa-address-book"></i> View Contacts</a>
-    <a href="" class="item"> <i class="fa-solid fa-pen-to-square"></i> Add Contact</a>
+    <a href="" th:href="@{/user/add-contact}" class="item"> <i class="fa-solid fa-pen-to-square"></i> Add Contact</a>
     <a href="" class="item"> <i class="fa-solid fa-user"></i> Your Profile</a>
     <a href="" class="item"> <i class="fa-solid fa-gears"></i> Settings</a>
-    <a href="" class="item"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    <a href="" th:href="@{/logout}" class="item"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     <div class="divider"></div>
 
 </div>
@@ -58,7 +58,7 @@
 
 
 <!-- Content area -->
-<div class="content">
+<div class="content mt-2">
 
     <i onclick="toggleSidebar()" class="fas fa-bars m-3"></i>
 

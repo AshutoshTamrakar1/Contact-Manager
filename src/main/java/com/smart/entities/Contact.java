@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "CONTACT")
-public class Contacts {
+public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int cId;
@@ -20,7 +20,8 @@ public class Contacts {
     private String secondName;
     private String email;
     private String phone;
-    private String image;
+    private String work;
+    private String profileImage;
     @Column(length = 1000)
     private String description;
 
