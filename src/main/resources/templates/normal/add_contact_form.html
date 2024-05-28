@@ -9,7 +9,7 @@
     <div class="card mr-3 ml-3">
         <div class="card-body ">
             <h1 class="text-center"> Add Contact </h1>
-            <div class="container-fluid mt-2">
+            <div class="container-fluid mt-1">
                 <div class="col-md-8 offset-md-2">
                     <form action="#" th:object="${contact}" enctype="multipart/form-data"
                           method="post" th:action="@{/user/process-contact}"
@@ -62,7 +62,7 @@
                                     <i class="fa fa-briefcase"></i>
                                 </div>
                             </div>
-                            <input type="email" id="workfield" name="work" placeholder="Enter Work Place Here.." class="form-control">
+                            <input type="text" id="workfield" name="work" placeholder="Enter Work Place Here.." class="form-control">
                         </div>
 
 <!--                        Contact Description-->
