@@ -4,11 +4,13 @@ import com.smart.dao.UserRepository;
 import com.smart.entities.Contact;
 import com.smart.entities.User;
 import com.smart.helper.Message;
+import com.smart.models.ContactDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/user")
@@ -44,18 +47,25 @@ public class UserController {
 
     //open add form handler
     @GetMapping("/add-contact")
-    public String openAddContactForm(Model model){
+    public String openAddContactForm(Model model, HttpSession session){
         model.addAttribute("title","Add Contact");
         model.addAttribute("contact",new Contact());
+
+        if ( Objects.nonNull(session.getAttribute("message")) && StringUtils.hasText(session.getAttribute("message").toString())) {
+            session.removeAttribute("message");
+        }
+
         return "normal/add_contact_form";
     }
 
     // processing add contact form
     @PostMapping("/process-contact")
-    public String processContact(@ModelAttribute Contact contact, @RequestParam("profileImage") MultipartFile file, Principal principal, HttpSession session){
+    public String processContact(@ModelAttribute ContactDTO contact, @RequestParam("profileImage") MultipartFile file, Principal principal, HttpSession session){
         try {
             String name = principal.getName();
             User user = this.userRepository.getUserByUserName(name);
+
+            Contact contactEntity = new Contact();
 
             //processing and uploading file...
             if(file.isEmpty()){
@@ -63,17 +73,24 @@ public class UserController {
                 System.out.println("file is empty");
             } else {
                 //save the file to a folder and update the name to contact
-                contact.setProfileImage(file.getOriginalFilename());
+                contactEntity.setProfileImage(file.getOriginalFilename());
 
-                File saveFile = new ClassPathResource("static/img").getFile();
+                contactEntity.setName(contact.getName());
+                contactEntity.setSecondName(contact.getSecondName());
+                contactEntity.setEmail(contact.getEmail());
+                contactEntity.setPhone(contact.getPhone());
+                contactEntity.setWork(contact.getWork());
+                contactEntity.setDescription(contact.getDescription().trim());
+
+                File saveFile = new File("static/img");
 
                 Path path= Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
                 Files.copy(file.getInputStream(),path , StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("Image is uploaded");
             }
 
-            user.getContacts().add(contact);
-            contact.setUser(user);
+            user.getContacts().add(contactEntity);
+//            contactEntity.setUser(user);
 
             this.userRepository.save(user);
 
@@ -81,6 +98,7 @@ public class UserController {
             System.out.println("added to database");
             // success msg
             session.setAttribute("message", new Message("Your contact is added,you can add more..","success"));
+
         } catch(Exception e){
             System.out.println("ERROR "+ e.getMessage());
             e.printStackTrace();

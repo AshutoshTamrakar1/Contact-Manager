@@ -63,12 +63,22 @@
     <i onclick="toggleSidebar()" class="fas fa-bars m-3"></i>
 
 <!--    messsage box-->
-    <div th:if="${session.message}" class="container">
+    <div id="alert-box" th:if="${session.message}" class="container">
         <div th:classappend="${'alert-'+session.message.type}" class="alert text-center"  role="alert">
-            <span th:text="${session.message.content}"></span>
+            <div class="row d-flex justify-content-around">
+                <div class="col">
+                    <span th:text="${session.message.content}"></span>
+                </div>
+                <div class="col">
+                    <i onclick="closeAlert()" class="fa-solid fa-close"></i>
+                </div>
+            </div>
         </div>
-        <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+
+<!--        <th:block th:text="${#session.removeAttribute('message')}"></th:block>-->
     </div>
+
+
 
     <div th:replace="${content}"></div>
 </div>

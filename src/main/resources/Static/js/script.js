@@ -12,3 +12,11 @@ const toggleSidebar = () => {
         $(".content").css("margin-left","20%");
     }
 };
+
+const closeAlert = () => {
+    if($("#alert-box").is(":visible")) {
+        $("#alert-box").css("display","none");
+    } else {
+        $("#alert-box").css("display","block");
+    }
+};
